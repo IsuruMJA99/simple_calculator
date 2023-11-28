@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: CalculatorApp(),
   ));
 }
 
+
+
 class CalculatorApp extends StatefulWidget {
   const CalculatorApp({Key? key}) : super(key: key);
+
+
 
   @override
   State<CalculatorApp> createState() => _CalculatorAppState();
