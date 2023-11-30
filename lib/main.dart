@@ -23,6 +23,8 @@ double secondNum = 0.0;
 var input ='';
 var output='';
 var operations='';
+var hideInputs = false;
+var outoutSize = 34.0;
 
 onButtonClick(value){
 
@@ -30,20 +32,38 @@ onButtonClick(value){
      input ='';
      output='';
   }
-else if(value == "<"){
-    input =input.substring(0,input.length - 1);
+else if(value == "Del"){
+
+  if (input.isNotEmpty){
+    input = input.substring(0,input.length - 1);
+  }
+    
 }
 else if(value == "="){
-    var userInput = input;
+  if (input.isNotEmpty){
+    var userInput = input; 
     userInput = input.replaceAll("x", "*");
     Parser p = Parser();
     Expression expression = p.parse(userInput);
     ContextModel cm = ContextModel();
     var finalValue = expression.evaluate(EvaluationType.REAL, cm);
-    output = finalValue;
+    output = finalValue.toString();
+    if(output.endsWith(".0")){
+    output = output.substring(0,output.length - 2);
      }
+
+     input = output;
+      hideInputs = true;
+      outoutSize = 52;
+  }
+}
+
+
+
   else{
     input = input + value;
+    hideInputs = false;
+    outoutSize = 34;
   }
 
   setState(() {});
@@ -64,7 +84,7 @@ else if(value == "="){
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  input,
+                   hideInputs?'': input,
                   style:  TextStyle(
                     fontSize: 48,
                     color: Colors.white,
@@ -76,7 +96,7 @@ else if(value == "="){
                 Text(
                   output,
                   style: TextStyle(
-                    fontSize: 34,
+                    fontSize: outoutSize,
                     color: Colors.white.withOpacity(0.7),
                   ),
                 ),
@@ -93,8 +113,8 @@ else if(value == "="){
             button(
                 text: "AC", buttonBgColor: operatorColor, tcolor: orangeColor),
             button(
-                text: "<", buttonBgColor: operatorColor, tcolor: orangeColor),
-            button(text: ""),
+                text: "Del", buttonBgColor: operatorColor, tcolor: orangeColor),
+            button(text: "%", tcolor: orangeColor, buttonBgColor: operatorColor),
             button(
                 text: "/", buttonBgColor: operatorColor, tcolor: orangeColor),
           ],
@@ -132,8 +152,7 @@ else if(value == "="){
         ),
         Row(
           children: [
-            button(
-                text: "%", tcolor: orangeColor, buttonBgColor: operatorColor),
+            button(text: ""),
             button(text: "0"),
             button(text: "."),
             button(text: "=", buttonBgColor: orangeColor),
